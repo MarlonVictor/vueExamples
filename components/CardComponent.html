@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>vueExamples - Card</title>
+</head>
+
+<body>
+  <div id="app" class="bg-teal-900 h-screen w-screen grid place-items-center">
+    <card></card>
+  </div>
+
+  <template id="card">
+    <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+      <card-image :image="cardImage"></card-image>
+
+      <card-description 
+        title="The Coldest Sunset"
+        :description="cardDescription"
+      ></card-description>
+
+      <card-tags
+        :isnew="true"
+        :isadvanced="false"
+      >
+      </card-tags>
+    </div>
+  </template>
+
+  <template id="card-image">
+    <img 
+      class="w-full" 
+      :src="image" 
+      alt="Placeholder image"
+    >
+  </template>
+
+  <template id="cardDescription">
+    <div class="px-6 py-4">
+      <div class="font-bold text-xl mb-2">{{ title }}</div>
+      <p class="text-gray-700 text-base">
+        {{ description }}
+      </p>
+    </div>
+  </template>
+
+  <template id="card-tags">
+    <div class="px-6 pt-4 pb-2">
+      <span v-if="isnew" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#new</span>
+      <span v-if="isadvanced" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#advanced</span>
+    </div>
+  </template>  
+  
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {}
+      }
+    })
+
+    app.component('card', {
+      data() {
+        return {
+          cardImage: 'https://via.placeholder.com/300x150.png',
+          cardDescription: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.',
+        }
+      },
+      template: '#card'
+    })
+
+    app.component('card-image', {
+      props: ['image'],
+      template: '#card-image'
+    })
+
+    app.component('card-description', {
+      props: ['title', 'description'],
+      template: '#cardDescription'
+    })
+
+    app.component('card-tags', {
+      props: ['isnew', 'isadvanced'],
+      template: '#card-tags'
+    })
+    
+    app.mount('#app')
+  </script>
+
+</body>
+</html>
