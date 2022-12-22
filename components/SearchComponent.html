@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>vueExamples - Search</title>
+</head>
+
+<body>
+  <div id="app" class="bg-gray-200 h-screen w-screen grid place-items-center">
+    <div class="max-w-2xl mx-auto bg-white p-3 shadow-md rounded">
+      <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl">
+        Get back to growth with <span class="text-teal-600 dark:text-teal-500">{{ txt }}</span> CRM.
+      </h1>
+
+      <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 mb-12">
+        {{ bottomText }}
+      </p>
+
+      <search @search="getSearchTxt"></search>
+
+      <div class="mt-5"> 
+        <div 
+          aria-label="Loading..." 
+          role="status" 
+          class="flex items-center space-x-2 justify-center"
+          v-if="txt"
+        >
+          <svg class="h-6 w-6 animate-spin stroke-gray-500" viewBox="0 0 256 256">
+            <line x1="128" y1="32" x2="128" y2="64" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="224" y1="128" x2="192" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="128" y1="224" x2="128" y2="192" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="32" y1="128" x2="64" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+            <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+          </svg>
+          <span class="text-xs font-medium text-gray-500">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template id="search">
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+
+      <input 
+        class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500" 
+        placeholder="Search" 
+        v-model="searchText"
+        @keyup.enter="handleSearch"
+      >
+
+      <button 
+        type="button" 
+        @click="handleSearch"
+        class="text-white absolute right-2.5 bottom-2.5 bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2"
+      >
+        Search
+      </button>
+    </div>
+  </template> 
+  
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          bottomText: 'Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.',
+          txt: ''
+        }
+      },
+      methods: {
+        getSearchTxt(text) {
+          this.txt = text
+        }
+      }
+    })
+
+    app.component('search', {
+      data() {
+        return {
+          searchText: "the world's #1"
+        }
+      },
+      methods: {
+        handleSearch() {
+          this.$emit('search', this.searchText)
+        }
+      },
+      template: '#search'
+    })
+
+    app.mount('#app')
+  </script>
+
+</body>
+</html>
