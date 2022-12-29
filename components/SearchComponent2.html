@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>vueExamples - Search</title>
+</head>
+
+<body>
+  <div id="app" class="bg-gray-200 h-screen w-screen grid place-items-center">
+    <div class="w-[30rem] mx-auto bg-white p-3 shadow-md rounded">
+      <search v-model:pai-user="user" v-model:pai-career.lowercase="career"></search>
+
+      <ul class="flex flex-col divide-y w-full mt-4">
+        <li v-for="user in users" class="flex flex-row">
+          <div class="select-none cursor-pointer hover:bg-gray-50 flex flex-1 items-center p-4">
+            <div class="flex flex-col w-10 h-10 justify-center items-center mr-4">
+              <a href="#" class="block relative">
+                <img alt="profil" :src="user.imageSrc" class="mx-auto object-cover rounded-full h-14 w-14" />
+              </a>
+            </div>
+            <div class="flex-1 pl-1">
+              <div class="font-medium">{{ user.name }}</div>
+              <div class="text-gray-600 text-sm">{{ user.career }}</div>
+            </div>
+            <div class="flex flex-row justify-center">
+              <div class="text-gray-600 text-xs">{{ user.time }}</div>
+              <button class="w-10 text-right flex justify-end">
+                <svg width="20" fill="currentColor" height="20" class="hover:text-gray-800 text-gray-500" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <template id="search">
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0">
+        <label class="block text-gray-700 text-xs font-bold mb-1" for="grid-name">
+          Name
+        </label>
+        <input 
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
+          id="grid-name" 
+          type="text" 
+          placeholder="Jean"
+          :value="paiUser"
+          @input="onChangeUser"
+        >
+      </div>
+      <div class="w-full md:w-1/2 px-3">
+        <label class="block text-gray-700 text-xs font-bold mb-1" for="grid-career">
+          Career
+        </label>
+        <input 
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" 
+          id="grid-career" 
+          type="text" 
+          placeholder="Designer"
+          :value="paiCareer"
+          @input="onChangeCareer"
+        >
+      </div>
+    </div>
+  </template> 
+  
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          user: '', 
+          career: 'de',
+          
+          users: [
+            {
+              name: 'Jean Marc',
+              career: 'developer',
+              time: '6:00 AM',
+              imageSrc: 'https://user-images.githubusercontent.com/62356988/208909801-b4912320-e975-41c5-9149-cf93fde63ffd.png'
+            },
+            {
+              name: 'Charlie Moi',
+              career: 'designer',
+              time: '8:00 PM',
+              imageSrc: 'https://user-images.githubusercontent.com/62356988/208912533-c7c48457-e08c-4cb4-b45f-3ab6658ca178.png'
+            }
+          ]
+        }
+      },
+    })
+
+    app.component('search', {
+      data() {
+        return {
+          userInput: '',
+          careerInput: '',
+        }
+      },
+
+      // Trazendo os valores do elemento pai
+      // paiCareerModifiers == pai-career.modifier
+      props: ['paiUser', 'paiCareer', 'paiCareerModifiers'],
+
+      methods: {
+        onChangeUser(ev) {
+          // v-model = update:modelValue
+          // v-model:pai-user = update:paiUser
+          this.$emit('update:paiUser', ev.target.value)
+        },
+
+        onChangeCareer(ev) {
+          let careerValue = ev.target.value
+
+          if (this.paiCareerModifiers?.lowercase) {
+            careerValue = careerValue.toLowerCase()
+          }
+
+          this.$emit('update:paiCareer', careerValue)
+        }
+      },
+      template: '#search'
+    })
+
+    app.mount('#app')
+  </script>
+
+</body>
+</html>
+
+
+<!-- 
+atualizando v-model com o emit
+uzando multiplos v-model
+-->
