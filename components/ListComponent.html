@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon"
+    href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    .shape-divider {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .shape-divider svg {
+      width: calc(140% + 1px);
+      height: 160px;
+    }
+
+    .shape-divider .shape-fill {
+      fill: #FFFFFF;
+    }
+  </style>
+  <title>vueExamples - Customer List</title>
+</head>
+
+<body>
+  <div id="app" class="bg-gray-100 h-screen w-screen grid place-items-center">
+    <div class="max-w-md w-full">
+
+      <div class="p-4 bg-white rounded-lg border shadow-md sm:p-8">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold leading-none text-gray-900">Latest Customers</h3>
+          <a href="#" class="text-sm font-medium text-blue-600 hover:underline">
+            View all
+          </a>
+        </div>
+
+        <div class="flow-root">
+          <ul role="list" class="divide-y divide-gray-200">
+            <customer></customer>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="shape-divider">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M598.97 114.72L0 0 0 120 1200 120 1200 0 598.97 114.72z" class="shape-fill"></path>
+      </svg>
+    </div>
+  </div>
+
+  <template id="customer">
+    <li class="py-3 sm:py-4">
+      <div class="flex items-center space-x-4">
+        <div class="flex-shrink-0">
+          <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="Neil image">
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">
+            Neil Sims
+          </p>
+          <p class="text-sm text-gray-500 truncate">
+            email@windster.com
+          </p>
+        </div>
+        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+          $320
+        </div>
+      </div>
+    </li>
+  </template>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {}
+      }
+    })
+
+    app.component('customer', {
+      data() {
+        return {}
+      },
+      template: '#customer'
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+
+</html>
