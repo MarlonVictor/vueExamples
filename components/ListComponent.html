@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon"
-    href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <style>
@@ -32,20 +31,51 @@
 
 <body>
   <div id="app" class="bg-gray-100 h-screen w-screen grid place-items-center">
-    <div class="max-w-md w-full">
+    <div class="w-full flex justify-center gap-5">
 
       <div class="p-4 bg-white rounded-lg border shadow-md sm:p-8">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold leading-none text-gray-900">Latest Customers</h3>
+          <h3 class="text-xl font-bold leading-none text-gray-900">{{ title }}</h3>
           <a href="#" class="text-sm font-medium text-blue-600 hover:underline">
             View all
           </a>
         </div>
 
         <div class="flow-root">
-          <ul role="list" class="divide-y divide-gray-200">
-            <customer></customer>
-          </ul>
+          <customers></customers>
+        </div>
+      </div>
+
+      <div class="p-4 bg-white rounded-lg border shadow-md sm:p-8">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold leading-none text-gray-900">{{ title }} (customized)</h3>
+          <a href="#" class="text-sm font-medium text-blue-600 hover:underline">
+            View all
+          </a>
+        </div>
+
+        <div class="flow-root">
+          <customers>
+            <template #default="slotProps">
+              <div class="flex items-center space-x-4">
+                <span>{{ slotProps.index + 1 }}</span>
+                <div class="flex-shrink-0">
+                  <img class="w-8 h-8 rounded-full" :src="slotProps.customer.imageUrl" :alt="slotProps.customer.name">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 truncate">
+                    {{ slotProps.customer.name }}
+                  </p>
+                  <p class="text-sm text-gray-500 truncate">
+                    {{ slotProps.customer.username }}
+                  </p>
+                </div>
+                <div class="inline-flex items-center text-base font-semibold text-gray-900 pl-10">
+                  {{ slotProps.customer.career }}
+                </div>
+              </div>
+            </template>
+          </customers>
         </div>
       </div>
     </div>
@@ -58,39 +88,65 @@
     </div>
   </div>
 
-  <template id="customer">
-    <li class="py-3 sm:py-4">
-      <div class="flex items-center space-x-4">
-        <div class="flex-shrink-0">
-          <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="Neil image">
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-gray-900 truncate">
-            Neil Sims
-          </p>
-          <p class="text-sm text-gray-500 truncate">
-            email@windster.com
-          </p>
-        </div>
-        <div class="inline-flex items-center text-base font-semibold text-gray-900">
-          $320
-        </div>
-      </div>
-    </li>
+  <template id="customers">
+    <ul role="list" class="divide-y divide-gray-200">
+      <li v-for="(item, index) in customersData" class="py-3 sm:py-4">
+
+        <slot :customer="item" :index="index">
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <img class="w-8 h-8 rounded-full" :src="item.imageUrl" :alt="item.name">
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate">
+                {{ item.name }}
+              </p>
+              <p class="text-sm text-gray-500 truncate">
+                {{ item.username }}
+              </p>
+            </div>
+          </div>
+        </slot>
+
+      </li>
+    </ul>
   </template>
 
   <script>
     const app = Vue.createApp({
       data() {
-        return {}
+        return {
+          title: 'Latest Customers'
+        }
       }
     })
 
-    app.component('customer', {
+    app.component('customers', {
       data() {
-        return {}
+        return {
+          customersData: [
+            {
+              name: 'Marlon Victor',
+              username: 'MarlonVictor',
+              imageUrl: 'https://avatars.githubusercontent.com/u/62356988?v=4',
+              career: 'Frontend'
+            },
+            {
+              name: 'Tiago Matos',
+              username: 'tiagomatosweb',
+              imageUrl: 'https://avatars.githubusercontent.com/u/3372967?v=4',
+              career: 'Web Developer'
+            },
+            {
+              name: 'Matheus Battisti - Hora de Codar',
+              username: 'matheusbattisti',
+              imageUrl: 'https://avatars.githubusercontent.com/u/11837941?v=4',
+              career: 'Teacher'
+            },
+          ],
+        }
       },
-      template: '#customer'
+      template: '#customers'
     })
 
     app.mount('#app')
@@ -98,3 +154,6 @@
 </body>
 
 </html>
+
+<!-- Utilizando os slots para renderizar o mesmo componente de formas diferentes -->
+<!-- Nele eu crio um componente com um designe padrão e reutilizo o componente com layout diferente utilizando passando para fora as props do slot -->
