@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    #app {
+      background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    }
+  </style>
+  <title>vueExamples - Form</title>
+</head>
+
+<body>
+  <div id="app" class="h-screen w-screen grid place-items-center">
+    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow">
+      <h2 class="text-lg font-semibold text-gray-700 capitalize">{{ title }}</h2>
+  
+      <form>
+        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+          <div v-for="field in formFields" :class="{'col-span-2': field.type === 'textarea'}">
+            <label 
+              class="text-gray-700" 
+              :for="field.label.toLowerCase()"
+            >
+              {{ field.label }}
+            </label>
+
+            <component 
+              :is="`form-${field.type}`"
+              :id="field.label"
+            ></component>
+
+            <!-- <form-input 
+              :id="field.label"
+              v-if="field.type === 'input'"
+            ></form-input>
+
+            <form-textarea 
+              :id="field.label"
+              v-else-if="field.type === 'textarea'"
+            ></form-textarea> -->
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <button class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Save</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <template id="formInput">
+    <input 
+      :id="id" 
+      type="text" 
+      class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-teal-400 focus:ring-teal-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+    >
+  </template>
+
+  <template id="formTextarea">
+    <textarea
+      :id="id"
+      class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-teal-400 focus:ring-teal-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+    >
+    </textarea>
+  </template>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          title: 'Account settings',
+          formFields: [
+            { label: 'First Name', type: 'input' },
+            { label: 'Last Name', type: 'input' },
+            { label: 'Bio', type: 'textarea' },
+          ]
+        }
+      }
+    })
+    .component('form-input', {
+      props: ['id'],
+      template: '#formInput'
+    })
+    .component('form-textarea', {
+      props: ['id'],
+      template: '#formTextarea'
+    })
+    .mount('#app')
+  </script>
+</body>
+</html>
+
+<!-- Component com :is é um componente dinamico do vue js que irá se transformar no componente com o nome passado na prop "is" -->
